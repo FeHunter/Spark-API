@@ -7,8 +7,8 @@ public class AlunoService {
 
     public AlunoService (){
         alunos.add(new Aluno(1, "Felipe", 9));
-        alunos.add(new Aluno(1, "Pedro", 9));
-        alunos.add(new Aluno(1, "Marcos", 9));
+        alunos.add(new Aluno(2, "Pedro", 9));
+        alunos.add(new Aluno(3, "Marcos", 9));
     }
 
     public List<Aluno> listaDeAlunos (int id) {
