@@ -11,7 +11,7 @@ public class AlunoService {
         alunos.add(new Aluno(3, "Marcos", 9));
     }
 
-    public List<Aluno> listaDeAlunos (int id) {
+    public List<Aluno> listaDeAlunos () {
         return alunos;
     }
 
