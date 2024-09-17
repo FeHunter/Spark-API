@@ -60,5 +60,16 @@ public class AlunoController {
             return "Aluno editado com sucesso!";
         });
 
+        delete("/alunos/:id", (request, response) -> {
+            int idParam = Integer.parseInt(request.params(":id"));
+            Aluno aluno = alunoService.buscaAlunoPorId(idParam);
+            if (aluno == null){
+                response.status(400);
+                return "Erro: Aluno não encontrado";
+            }
+            alunoService.deletarAluno(idParam);
+            response.status(200);
+            return "O aluno foi removido";
+        });
     }
 }
