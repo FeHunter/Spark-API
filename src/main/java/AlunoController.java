@@ -26,5 +26,12 @@ public class AlunoController {
            response.status(200);
            return json;
         });
+
+        post("/alunos", (request, response) -> {
+            Aluno aluno = mapper.readValue(request.body(), Aluno.class);
+            alunoService.adicionarAluno(aluno);
+            response.status(200);
+            return "Aluno adicionado com sucesso!";
+        });
     }
 }
