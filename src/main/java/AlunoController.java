@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import static spark.Spark.*;
@@ -28,9 +29,15 @@ public class AlunoController {
         });
 
         post("/alunos", (request, response) -> {
-            Aluno aluno = mapper.readValue(request.body(), Aluno.class);
+            Aluno aluno;
+            try {
+                aluno = mapper.readValue(request.body(), Aluno.class)
+            }catch (JsonProcessingException e){
+                response.status(400);
+                return "Erro: Json com problemas";
+            }
             alunoService.adicionarAluno(aluno);
-            response.status(200);
+            response.status(201);
             return "Aluno adicionado com sucesso!";
         });
     }
