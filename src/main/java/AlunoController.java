@@ -31,14 +31,34 @@ public class AlunoController {
         post("/alunos", (request, response) -> {
             Aluno aluno;
             try {
-                aluno = mapper.readValue(request.body(), Aluno.class)
+                aluno = mapper.readValue(request.body(), Aluno.class);
             }catch (JsonProcessingException e){
-                response.status(400);
+                response.status(404);
                 return "Erro: Json com problemas";
             }
             alunoService.adicionarAluno(aluno);
             response.status(201);
             return "Aluno adicionado com sucesso!";
         });
+
+        put("/alunos/:id", (request, response) -> {
+            int idParam = Integer.parseInt(request.params(":id"));
+            Aluno aluno = alunoService.buscaAlunoPorId(idParam);
+            if (aluno == null){
+                response.status(400);
+                return "Erro: Aluno não encontrado";
+            }
+            Aluno alunoEdit;
+            try {
+                alunoEdit = mapper.readValue(request.body(), Aluno.class);
+            }catch (JsonProcessingException e){
+                response.status(400);
+                return "Erro: Json com problemas";
+            }
+            alunoService.editarAluno(aluno, alunoEdit);
+            response.status(201);
+            return "Aluno editado com sucesso!";
+        });
+
     }
 }
