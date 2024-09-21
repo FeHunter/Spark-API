@@ -44,7 +44,7 @@ public class AlunoServiceTest {
     }
 
     @Test
-    void alunoServiceAlunoIdEncontradoStatusCodeTest () {
+    void encontradoAlunoStatusCodeTest () {
         // Arrange
         final String urlApi = "http://localhost:4567/alunos/2";
         int statusCodeResposta = 0;
@@ -61,6 +61,31 @@ public class AlunoServiceTest {
 
         // Assert
         assertEquals(200, statusCodeResposta);
+    }
+
+    @Test
+    void adicionarAlunoStatusCode (){
+        // act
+        final String apiUrl = "http://localhost:4567/alunos";
+        String alunoJson = "{\"id\": 6, \"nome\": \"Joao\", \"nota\": 8}";
+        int statusCodeResposta = 0;
+
+        // arrange
+        try {
+            HttpClient client = HttpClient.newBuilder().build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(alunoJson))
+                    .build();
+            HttpResponse<String> resposta = client.send(request, HttpResponse.BodyHandlers.ofString());
+            statusCodeResposta = resposta.statusCode();
+        }catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        // asset
+        assertEquals(201, statusCodeResposta);
     }
 
     @AfterEach

@@ -32,9 +32,9 @@ public class AlunoController {
             Aluno aluno;
             try {
                 aluno = mapper.readValue(request.body(), Aluno.class);
-            }catch (JsonProcessingException e){
-                response.status(404);
-                return "Erro: Json com problemas";
+            } catch (JsonProcessingException e) {
+                response.status(400);
+                return "Erro: JSON com problemas";
             }
             alunoService.adicionarAluno(aluno);
             response.status(201);
