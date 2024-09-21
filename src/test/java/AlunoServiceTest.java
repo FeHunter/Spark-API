@@ -1,14 +1,13 @@
-import java.io.IOException;
-import java.net.http.HttpClient;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.net.URI;
+import java.io.IOException;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.URI;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static spark.Spark.*;
 
 public class AlunoServiceTest {
 
@@ -17,21 +16,6 @@ public class AlunoServiceTest {
     @BeforeEach
     public void setup (){
         alunoService = new AlunoService();
-
-        // configurando o spark
-        port(4567);
-        get("/alunos/:id", (request, response) -> {
-            int id = Integer.parseInt(request.params(":id"));
-            Aluno aluno = alunoService.buscaAlunoPorId(id);
-            if (aluno != null) {
-                response.status(200);
-                return "Aluno encontrado";
-            } else {
-                response.status(404);
-                return "Aluno não encontrado";
-            }
-        });
-        awaitInitialization();
     }
 
     @Test
@@ -47,22 +31,6 @@ public class AlunoServiceTest {
     }
 
     @Test
-    void alunoServiceAlunoIdEncontradoStatusCodeTest () throws IOException, InterruptedException {
-        // Arrange
-        int buscarID = 2;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:4567/alunos/" + buscarID))
-                .build();
-
-        // act
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // assert
-        assertEquals(200, response.statusCode(), "Teste ok");
-    }
-
-    @Test
     void alunoServiceAlunoIdNaoEncontradoTest (){
         // Arrange
         int buscarID = 0;
@@ -73,6 +41,26 @@ public class AlunoServiceTest {
         // assert
         Assertions.assertNull(resultado);
 
+    }
+
+    @Test
+    void alunoServiceAlunoIdEncontradoStatusCodeTest () {
+        // Arrange
+        final String urlApi = "http://localhost:4567/alunos/2";
+        int statusCodeResposta = 0;
+
+        // Act
+        try {
+            HttpClient client = HttpClient.newBuilder().build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(urlApi)).build();
+            HttpResponse<String> resposta = client.send(request, HttpResponse.BodyHandlers.ofString());
+            statusCodeResposta = resposta.statusCode();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        // Assert
+        assertEquals(200, statusCodeResposta);
     }
 
     @AfterEach
