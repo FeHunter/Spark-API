@@ -34,7 +34,7 @@ public class AlunoService {
         alunos.remove(removerAluno);
     }
 
-    public void adicionarAluno (Aluno aluno){
-        alunos.add(aluno);
+    public void adicionarAluno (Aluno adicionarAluno){
+        alunos.add(adicionarAluno);
     }
 }

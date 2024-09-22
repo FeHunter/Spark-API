@@ -6,6 +6,7 @@ public class Aluno {
     private String nome;
     private int nota;
 
+    public Aluno (){}
     public Aluno(int id, String nome, int nota) {
         this.id = id;
         this.nome = nome;
